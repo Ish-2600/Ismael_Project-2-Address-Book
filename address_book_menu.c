@@ -30,10 +30,16 @@ int get_option(int type, const char *msg)
     return e_no_opt;
   }
 
+  if (type == NONE)
+  {
+    return e_no_opt;
+  }
+
+  return e_no_opt;
+
 	/*
 	 * Mutilfuction user intractions like
 	 * Just an enter key detection
-	 * Read an number
 	 * Read a charcter
 	 */ 
 
