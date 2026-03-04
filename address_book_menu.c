@@ -16,7 +16,22 @@ int get_option(int type, const char *msg)
   char input[64];
   int index = 0;
 
+  // Read character input
+  // Used for "Y", "N", "Q" for quit, "N" for next, etc...
+  if (type == CHAR)
+  {
+    while (input[index] != '\0')
+    {
+      if(!isspace((unsigned char)input[index]))
+      {
+        return toupper((unsigned char)input[index]);
+      }
+      index++;
+    }
+  }
+
   // Read number input
+  // Used for Menu options (add contact, edit contact, etc...)
   if (type == NUM)
   {
     while (input[index] != '\0')
@@ -30,20 +45,14 @@ int get_option(int type, const char *msg)
     return e_no_opt;
   }
 
+  // Read no input
+  // Used for "hit enter to continue"
   if (type == NONE)
   {
     return e_no_opt;
   }
 
   return e_no_opt;
-
-	/*
-	 * Mutilfuction user intractions like
-	 * Just an enter key detection
-	 * Read a charcter
-	 */ 
-
-	/* Fill the code to add above functionality */
 }
 
 Status save_prompt(AddressBook *address_book)
