@@ -13,6 +13,23 @@
 
 int get_option(int type, const char *msg)
 {
+  char input[64];
+  int index = 0;
+
+  // Read number input
+  if (type == NUM)
+  {
+    while (input[index] != '\0')
+    {
+      if (isdigit((unsigned char)input[index]))
+      {
+        return input[index] - '0';
+      }
+      index++;
+    }
+    return e_no_opt;
+  }
+
 	/*
 	 * Mutilfuction user intractions like
 	 * Just an enter key detection
