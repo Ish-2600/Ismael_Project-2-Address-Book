@@ -19,6 +19,14 @@ int get_option(int type, const char *msg)
   char input[64];
   int index = 0;
 
+  	if (msg != NULL){ //Checks to see if msg is NULL
+        printf("%s", msg);
+	}
+
+    if (fgets(input, sizeof(input), stdin) == NULL){ //Checks to see if input was NULL
+        return e_no_opt;
+    }
+
   // Read character input
   // Used for "Y", "N", "Q" for quit, "N" for next, etc...
   if (type == CHAR)
