@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <cstring>
 #include <stdio.h>
 //#include <stdio_ext.h>
 #include <stdlib.h>
@@ -148,7 +150,6 @@ Status menu(AddressBook *address_book)
     			else{
     			    printf("Failed to add contact.\n");
    				 }
-				 
     			break;
 			case e_search_contact:
 				search_contact(address_book);
@@ -173,11 +174,63 @@ Status menu(AddressBook *address_book)
 	return e_success;
 }
 
+//Ismael
 Status add_contacts(AddressBook *address_book)
 {
 	/* Add the functionality for adding contacts here */
+
+	int check = 0; //Used as a way to see if the function is done looping
+	ContactInfo *temp = realloc(address_book->list,(address_book->count + 1) * sizeof(ContactInfo)); //Reallocating Memory for each new contact added.
+
+	if (temp == NULL){ //Checks if the reallocating was successful
+		return e_fail;
+	}
+
+	address_book->list = temp; //Assign the new memory back to the address book
+
+	ContactInfo *new_contact = &address_book->list[address_book->count]; //New contact pointer using the address books count to see whats the next
+																		//available slot
+	memset(new_contact,0,sizeof(ContactInfo)); //Clears the memory so unused phone numbers and emails start empty
+
+	printf("Enter Name: "); //Gets the name from  the user
+	fgets(new_contact->name[0],NAME_LEN, stdin);
+	new_contact->name[0][strcspn(new_contact->name[0],"\n")] = '\0'; //Fixs the input of the \n because of the fgets
+
+	//Check if the user actually entered a name
+	if(strlen(new_contact->name[0]) == 0){
+		printf("Name cannot be empty.\n");
+		return e_fail;
+	}
+
+	for (int i = 0; i <PHONE_NUMBER_COUNT && check == 0; i++){
+		printf("Enter Phone %d (press enter to skip): ",i + 1);//Adds phone numbers to one contact
+		fgets(new_contact->phone_numbers[i],NUMBER_LEN,stdin);
+		new_contact->phone_numbers[i][strcspn(new_contact->phone_numbers[i], "\n")] = '\0';
+
+		if (strlen(new_contact->phone_numbers[i]) == 0){ //Leaves the loop
+			check = 1;
+		}
+
+	}
+
+	check = 0; //Check back to zero
+
+	for (int i = 0; i < EMAIL_ID_COUNT && check == 0; i++){ //Same as the Phone number
+		printf("Enter Email %d (press enter to stop): ", i + 1);
+        fgets(new_contact->email_addresses[i], EMAIL_ID_LEN, stdin);
+        new_contact->email_addresses[i][strcspn(new_contact->email_addresses[i], "\n")] = '\0';
+
+        if (strlen(new_contact->email_addresses[i]) == 0){
+            check = 1;
+        }
+	}
+
+	new_contact->si_no = address_book->count + 1; //Gives the contact a serial number
+    address_book->count++; //Increase count
+    return e_success;
 }
 
+//Ismael
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
 {
 	/* Add the functionality for adding contacts here */
