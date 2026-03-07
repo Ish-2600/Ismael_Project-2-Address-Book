@@ -1,5 +1,5 @@
-#include <cstdio>
-#include <cstring>
+//#include <cstdio>
+//#include <cstring>
 #include <stdio.h>
 //#include <stdio_ext.h>
 #include <stdlib.h>
@@ -7,6 +7,7 @@
 #include <ctype.h>
 #include "address_book.h"
 #include "address_book_menu.h"
+#include "address_book_fops.h"
 
 //#include "abk_fileops.h"
 //#include "abk_log.h"
@@ -234,6 +235,65 @@ Status add_contacts(AddressBook *address_book)
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
 {
 	/* Add the functionality for adding contacts here */
+	int found = 0;
+	int match = 0;
+
+	if (str == NULL || address_book == NULL || address_book->list == NULL){ //Check for NULL Values
+		return e_fail;
+	}
+
+	for (int i = 0; i < address_book->count; i++){
+		//Match needs to be set to zero since the user might want to do multiple searches
+		match = 0;
+		if (field == 0){ //Search by name
+			if (strcmp(address_book->list[i].name[0], str) == 0){
+				match = 1;
+			}
+		}
+
+		else if (field == 1){ //Search by phone number
+			for (int j = 0; j < PHONE_NUMBER_COUNT && match == 0; j++){
+				if (strcmp(address_book->list[i].phone_numbers[j], str) == 0){
+					match = 1;
+				}
+			}
+		}
+
+		else if (field == 2){ //Search via email
+			for (int j = 0; j < EMAIL_ID_COUNT && match == 0; j++){
+				if (strcmp(address_book->list[i].email_addresses[j], str) == 0){
+					match = 1;
+				}
+			}
+		}
+
+		if (match == 1){
+			printf("Contact Found:\n");
+			printf("S.No : %d\n", address_book->list[i].si_no); // Prints it serial number
+			printf("Name : %s\n", address_book->list[i].name[0]); //Prints the name
+
+			printf("Phone Numbers:\n");
+			for (int j = 0; j < PHONE_NUMBER_COUNT; j++){ // Prints the Multiple phone numbers if any
+				if (strlen(address_book->list[i].phone_numbers[j]) > 0){
+					printf("%s\n", address_book->list[i].phone_numbers[j]);
+				}
+			}
+
+			printf("Email Addresses:\n");
+			for (int j = 0; j < EMAIL_ID_COUNT; j++){ // Prints the Multiple emails if any
+				if (strlen(address_book->list[i].email_addresses[j]) > 0){
+					printf("%s\n", address_book->list[i].email_addresses[j]);
+				}
+			}
+			//Needed at the end so it doesn't stay zero and return no match
+			found = 1;
+		}
+	}
+	//Nothing found
+	if (found == 0){
+		return e_no_match;
+	}
+	return e_success;
 }
 
 Status search_contact(AddressBook *address_book)
