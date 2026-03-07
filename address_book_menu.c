@@ -5,7 +5,6 @@
 #include <ctype.h>
 #include "address_book.h"
 #include "address_book_menu.h"
-#include "address_book_fops.h"
 
 //#include "abk_fileops.h"
 //#include "abk_log.h"
@@ -16,18 +15,6 @@ int get_option(int type, const char *msg)
 {
   char input[64];
   int index = 0;
-
-  // checks if there's a message to print
-  if (msg != NULL && msg[0] != '\0')
-  {
-    printf("%s", msg);
-  }
-
-  // reads stdin, if NULL, return error
-  if (fgets(input, sizeof(input), stdin) == NULL )
-  {
-    return e_no_opt;
-  }
 
   // Read character input
   // Used for "Y", "N", "Q" for quit, "N" for next, etc...
