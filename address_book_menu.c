@@ -141,7 +141,15 @@ Status menu(AddressBook *address_book)
 		{
 			case e_add_contact:
 				/* Add your implementation to call add_contacts function here */
-				break;
+				ret = add_contacts(address_book);
+    			if (ret == e_success){
+       		 		printf("Contact added successfully.\n");
+    			}
+    			else{
+    			    printf("Failed to add contact.\n");
+   				 }
+				 
+    			break;
 			case e_search_contact:
 				search_contact(address_book);
 				break;
