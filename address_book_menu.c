@@ -304,6 +304,8 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 	return e_success;
 }
 
+//This function is the interactive part the user uses for the search the one
+//above is the logic.
 Status search_contact(AddressBook *address_book)
 {
 	/* Add the functionality for search contacts here */
