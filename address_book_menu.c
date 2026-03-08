@@ -19,7 +19,7 @@ int get_option(int type, const char *msg)
   char input[64];
   int index = 0;
 
-  	if (msg != NULL){ //Checks to see if msg is NULL
+  	if (msg != NULL && *msg != '\0'){ //Checks to see if msg is NULL
         printf("%s", msg);
 	}
 
