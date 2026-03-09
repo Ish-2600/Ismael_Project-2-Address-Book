@@ -1,0 +1,13 @@
+# Compiled binaries
+addressbook
+test1
+test2
+test3
+*.o
+*.out
+
+# Local data files
+address_book.csv
+
+# Nano backups
+*.save
