@@ -8,10 +8,15 @@
 #include "address_book_menu.h"
 //Ismael Initial commit
 
+
 int main(void)
 {
 	AddressBook address_book;
 	Status ret;
+
+	address_book.fp = NULL;
+	address_book.list = NULL;
+	address_book.count = 0;
 
 	/* Load the file from .csv file if any */
 	ret = load_file(&address_book);
