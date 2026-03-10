@@ -380,7 +380,73 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 Status search_contact(AddressBook *address_book)
 {
 	/* Add the functionality for search contacts here */
-	return e_success;
+	// error handling, making sure our address book actually exists
+	if (address_book == NULL || address_book->list == NULL || address_book->count == 0) {
+		printf("No contacts found.\n");
+		return e_fail;
+	}
+	
+	//print menu heading for searching
+	menu_header("Search Contact to Delete by:\n\n");
+
+	//Ask the user to give an option and receive 
+	int fieldOption = get_option(NUM, "Please select an option: ");
+
+	// field will be fed into search function
+	//prompt will be shown to user so that they can input their search query
+	//SEARCH_LEN will be the length cap of query
+	int field;
+	const char *prompt;
+	int SEARCH_LEN;
+
+	// switch case to prepare SEARCH_LEN, prompt, and field for the user.
+	switch(fieldOption) {
+		case 1:
+			field = 0;
+			prompt = "Please enter a name to search: ";
+			SEARCH_LEN = NAME_LEN;
+			break;
+		case 2:
+			field = 1;
+			prompt = "Please enter a phone number to search: ";
+			SEARCH_LEN = 10;
+			break;
+		case 3:
+			field = 2;
+			prompt = "Please enter an email address to search: ";
+			SEARCH_LEN = EMAIL_ID_LEN;
+			break;
+		case 4:
+			field = 3;
+			prompt = "Please enter a session ID to search: ";
+			SEARCH_LEN = NAME_LEN;
+			break;
+		default:
+			prompt = "Invalid option.\n";
+			return e_fail;
+	}
+
+	// removing newline and replacing with null terminator
+	char query[SEARCH_LEN];
+	printf("%s", prompt);
+	fgets(query, sizeof(query), stdin);
+	query[strcspn(query, "\n")] = '\0';
+
+	//error handling is empty query
+	if (strlen(query) == 0) {
+		printf("Search query cannot be empty.\n");
+		return e_fail;
+	}
+
+	Status result = search(query, address_book, address_book->count, field, NULL, e_search);
+
+	if (result == e_no_match) {
+		printf("No contacts found matching \"%s\".\n", query);
+	}
+
+	get_option(NONE, "\nPress Enter to continue...");
+
+	return result;
 }
 
 Status edit_contact(AddressBook *address_book)

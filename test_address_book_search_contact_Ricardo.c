@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "unity.h"
 #include "address_book.h"
 #include "address_book_menu.h"
@@ -20,12 +21,13 @@ AddressBook makeTestAddressBook(void) {
 
     memset(&ab.list[0], 0, sizeof(ContactInfo));
     ab.list[0].si_no = 1;
-    strcpy(ab.list[0].name, "John Doe");
+    strcpy(ab.list[0].name[0], "John Doe");
     strcpy(ab.list[0].phone_numbers[0], "6261234567");
     strcpy(ab.list[0].email_addresses[0], "johndoe@gmail.com");
 
     memset(&ab.list[1], 0, sizeof(ContactInfo));
-    strcpy(ab.list[1].name, "Jane Doe");
+    ab.list[0].si_no = 2;
+    strcpy(ab.list[1].name[0], "Jane Doe");
     strcpy(ab.list[1].phone_numbers[0], "62668901234");
     strcpy(ab.list[1].email_addresses[0], "janedoe@hotmail.com");
 
