@@ -91,6 +91,7 @@ Status save_prompt(AddressBook *address_book)
 	return e_success;
 }
 
+//Chris
 Status list_contacts(AddressBook *address_book, const char *title, int *index, const char *msg, Modes mode)
 {
   if (address_book == NULL || address_book->list == NULL || address_book->count == 0)
