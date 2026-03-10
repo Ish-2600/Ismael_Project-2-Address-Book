@@ -7,3 +7,4 @@
 1. run `make debug1`, then `test1` for (add_contact(), search_contact())
 2. run `make debug2`, then `test2` for (get_option())
 3. run `make debug3`, then `test3` for (list_contacts())
+4. run `make debug4`, then `test4` for (search_contact)

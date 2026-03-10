@@ -9,3 +9,6 @@ debug2:
 
 debug3:
 	gcc address_book_fops.c address_book_menu.c unity.c test_address_book_list_contacts_Chris.c -o test3 -I.
+
+debug4:
+	gcc address_book_fops.c address_book_menu.c unity.c test_address_book_search_contact_Ricardo.c -o test4 -I.
