@@ -91,6 +91,7 @@ a			save_file(address_book);
 	return e_success;
 }
 
+//Chris
 Status list_contacts(AddressBook *address_book, const char *title, int *index, const char *msg, Modes mode)
 {
   if (address_book == NULL || address_book->list == NULL || address_book->count == 0)
@@ -380,29 +381,81 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 //Vik
 Status search_contact(AddressBook *address_book)
 {
-    int opt;
-    char key[128];
-    Status ret;
+	/* Add the functionality for search contacts here */
+	// error handling, making sure our address book actually exists
+	if (address_book == NULL || address_book->list == NULL || address_book->count == 0) {
+		printf("No contacts found.\n");
+		return e_fail;
+	}
+	
+	//print menu heading for searching
+	menu_header("Search Contact to Delete by:\n\n");
+	//Menu
+	printf("Search by: \n");
+	printf("1: Name \n");
+	printf("2: Phone Number \n");
+	printf("3: Email \n");
+	printf("4: Session ID \n");
+	
+	//Ask the user to give an option and receive 
+	int fieldOption = get_option(NUM, "Please select an option: ");
+	
 
-    menu_header("Search Contact");
-    printf("1. By Name\n2. By Phone\n3. By Email\n");
-    opt = get_option(NUM, "Select: ");
+	// field will be fed into search function
+	//prompt will be shown to user so that they can input their search query
+	//SEARCH_LEN will be the length cap of query
+	int field;
+	const char *prompt;
+	int SEARCH_LEN;
 
-    if (opt < 1 || opt > 3)
-        return e_fail;
+	// switch case to prepare SEARCH_LEN, prompt, and field for the user.
+	switch(fieldOption) {
+		case 1:
+			field = 0;
+			prompt = "Please enter a name to search: ";
+			SEARCH_LEN = NAME_LEN;
+			break;
+		case 2:
+			field = 1;
+			prompt = "Please enter a phone number to search: ";
+			SEARCH_LEN = 10;
+			break;
+		case 3:
+			field = 2;
+			prompt = "Please enter an email address to search: ";
+			SEARCH_LEN = EMAIL_ID_LEN;
+			break;
+		case 4:
+			field = 3;
+			prompt = "Please enter a session ID to search: ";
+			SEARCH_LEN = NAME_LEN;
+			break;
+		default:
+			prompt = "Invalid option.\n";
+			return e_fail;
+	}
 
-	    printf("Enter search key: ");
-    if (fgets(key, sizeof(key), stdin) == NULL)
-        return e_fail;
-    key[strcspn(key, "\r\n")] = '\0';
+	// removing newline and replacing with null terminator
+	char query[SEARCH_LEN];
+	printf("%s", prompt);
+	fgets(query, sizeof(query), stdin);
+	query[strcspn(query, "\n")] = '\0';
 
-    ret = search(key, address_book, 0, opt - 1, NULL, e_search);
+	//error handling is empty query
+	if (strlen(query) == 0) {
+		printf("Search query cannot be empty.\n");
+		return e_fail;
+	}
 
-    if (ret == e_no_match)
-        printf("No match found.\n");
+	Status result = search(query, address_book, address_book->count, field, NULL, e_search);
 
-    get_option(NONE, "Press Enter to continue...");
-    return ret;
+	if (result == e_no_match) {
+		printf("No contacts found matching \"%s\".\n", query);
+	}
+
+	get_option(NONE, "\nPress Enter to continue...");
+
+	return result;
 }
 
 //Vik
