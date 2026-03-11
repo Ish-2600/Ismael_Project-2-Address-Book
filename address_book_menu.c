@@ -388,9 +388,16 @@ Status search_contact(AddressBook *address_book)
 	
 	//print menu heading for searching
 	menu_header("Search Contact to Delete by:\n\n");
-
+	//Menu
+	printf("Search by: \n");
+	printf("1: Name \n");
+	printf("2: Phone Number \n");
+	printf("3: Email \n");
+	printf("4: Session ID \n");
+	
 	//Ask the user to give an option and receive 
 	int fieldOption = get_option(NUM, "Please select an option: ");
+	
 
 	// field will be fed into search function
 	//prompt will be shown to user so that they can input their search query
