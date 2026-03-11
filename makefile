@@ -12,3 +12,6 @@ debug3:
 
 debug4:
 	gcc address_book_fops.c address_book_menu.c unity.c test_address_book_search_contact_Ricardo.c -o test4 -I.
+
+debug6:
+	gcc address_book_fops.c address_book_menu.c unity.c test_address_book_Viknesh.c -o test6 -I.

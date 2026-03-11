@@ -79,7 +79,7 @@ Status save_prompt(AddressBook *address_book)
 
 		if (option == 'Y')
 		{
-a			save_file(address_book);
+			save_file(address_book);
 			printf("Exiting. Data saved in %s\n", DEFAULT_FILE);
 
 			break;
@@ -377,6 +377,7 @@ Status search(const char *str, AddressBook *address_book, int loop_count, int fi
 
 //This function is the interactive part the user uses for the search the one
 //above is the logic.
+
 //Ricardo
 Status search_contact(AddressBook *address_book)
 {
@@ -457,139 +458,6 @@ Status search_contact(AddressBook *address_book)
 	return result;
 }
 
-//Vik
-Status edit_contact(AddressBook *address_book)
-{
-    int opt;
-    char key[128];
-
-    menu_header("Edit Contact");
-    printf("1. Find By Name\n2. Find By Phone\n3. Find By Email\n");
-    opt = get_option(NUM, "Select: ");
-
-    if (opt < 1 || opt > 3)
-        return e_fail;
-
-    printf("Enter key to find: ");
-    if (fgets(key, sizeof(key), stdin) == NULL)
-        return e_fail;
-    key[strcspn(key, "\r\n")] = '\0';
-
-    int idx = -1;
-
-    for (int i = 0; i < address_book->count && idx == -1; i++)
-    {
-        if (opt == 1)
-        {
-            if (strcmp(address_book->list[i].name[0], key) == 0) idx = i;
-        }
-        else if (opt == 2)
-        {
-            for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
-                if (strcmp(address_book->list[i].phone_numbers[j], key) == 0) idx = i;
-        }
-        else
-        {
-            for (int j = 0; j < EMAIL_ID_COUNT; j++)
-                if (strcmp(address_book->list[i].email_addresses[j], key) == 0) idx = i;
-        }
-    }
-
-    if (idx == -1)
-    {
-        printf("No match found.\n");
-        get_option(NONE, "Press Enter to continue...");
-        return e_no_match;
-    }
-
-    printf("Edit what?\n1. Name\n2. Phone1\n3. Email1\n");
-    int field = get_option(NUM, "Select: ");
-
-    if (field == 1)
-    {
-        printf("Enter new name: ");
-        fgets(address_book->list[idx].name[0], NAME_LEN, stdin);
-        address_book->list[idx].name[0][strcspn(address_book->list[idx].name[0], "\r\n")] = '\0';
-    }
-    else if (field == 2)
-    {
-        printf("Enter new phone: ");
-        fgets(address_book->list[idx].phone_numbers[0], NUMBER_LEN, stdin);
-        address_book->list[idx].phone_numbers[0][strcspn(address_book->list[idx].phone_numbers[0], "\r\n")] = '\0';
-    }
-    else if (field == 3)
-    {
-        printf("Enter new email: ");
-        fgets(address_book->list[idx].email_addresses[0], EMAIL_ID_LEN, stdin);
-        address_book->list[idx].email_addresses[0][strcspn(address_book->list[idx].email_addresses[0], "\r\n")] = '\0';
-    }
-    else
-    {
-        return e_fail;
-    }
-
-    printf("Updated.\n");
-    get_option(NONE, "Press Enter to continue...");
-    return e_success;
-}
-
-//Viknesh Ashokkumar
-Status delete_contact(AddressBook *address_book)
-{
-    int opt;
-    char key[128];
-
-    menu_header("Delete Contact");
-    printf("1. By Name\n2. By Phone\n3. By Email\n");
-    opt = get_option(NUM, "Select: ");
-
-    if (opt < 1 || opt > 3)
-        return e_fail;
-
-    printf("Enter key to delete: ");
-    if (fgets(key, sizeof(key), stdin) == NULL)
-        return e_fail;
-    key[strcspn(key, "\r\n")] = '\0';
-
-    int found_index = -1;
-
-    for (int i = 0; i < address_book->count && found_index == -1; i++)
-    {
-        if (opt == 1)
-        {
-            if (strcmp(address_book->list[i].name[0], key) == 0) found_index = i;
-        }
-        else if (opt == 2)
-        {
-            for (int j = 0; j < PHONE_NUMBER_COUNT; j++)
-                if (strcmp(address_book->list[i].phone_numbers[j], key) == 0) found_index = i;
-        }
-        else
-        {
-            for (int j = 0; j < EMAIL_ID_COUNT; j++)
-                if (strcmp(address_book->list[i].email_addresses[j], key) == 0) found_index = i;
-        }
-    }
-
-    if (found_index == -1)
-    {
-        printf("No match found.\n");
-        get_option(NONE, "Press Enter to continue...");
-        return e_no_match;
-    }
-
-    for (int i = found_index; i < address_book->count - 1; i++)
-        address_book->list[i] = address_book->list[i + 1];
-
-    address_book->count--;
-
-    for (int i = 0; i < address_book->count; i++)
-        address_book->list[i].si_no = i + 1;
-
-    printf("Deleted.\n");
-    get_option(NONE, "Press Enter to continue...");
-    return e_success;
-}
 //Viknesh Ashokkumar
 Status edit_contact(AddressBook *address_book)
 {
